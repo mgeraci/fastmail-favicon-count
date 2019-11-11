@@ -7,8 +7,8 @@ drafts folder) to the Fastmail favicon. It works with both Firefox and Chrome.
 
 ## Installation
 To install:
-1) `git clone git@github.com:mgeraci/fastmail-calendar-overview.git`
-1) `cd fastmail-calendar-overview`
+1) `git clone git@github.com:mgeraci/fastmail-favicon-count.git`
+1) `cd fastmail-favicon-count`
 1) `yarn install`
 
 ## Compilation
