@@ -1,6 +1,12 @@
 /* global document, Image */
 
-import { ICON, NUMBERS } from './constants';
+import {
+  FASTMAIL_FOLDER,
+  FASTMAIL_FOLDER_NAME,
+  FASTMAIL_BADGE,
+  ICON,
+  NUMBERS,
+} from './constants';
 
 const FastmailFaviconCount = {
   init() {
@@ -26,14 +32,14 @@ const FastmailFaviconCount = {
   },
 
   getUnreadCount() {
-    const folders = document.querySelectorAll('.v-FolderSource');
     let res = 0;
+    const folders = document.querySelectorAll(FASTMAIL_FOLDER);
     const mailboxesToIgnore = ['Drafts', 'Trash'];
 
     folders.forEach((folder, i) => {
-      const name = folder.querySelector('.v-FolderSource-name').innerHTML;
+      const name = folder.querySelector(FASTMAIL_FOLDER_NAME).innerHTML;
       const count = parseInt(
-        folder.querySelector('.v-FolderSource-badge').innerHTML, 10,
+        folder.querySelector(FASTMAIL_BADGE).innerHTML, 10,
       ) || 0;
 
       if (mailboxesToIgnore.indexOf(name) < 0) {
@@ -154,7 +160,8 @@ const FastmailFaviconCount = {
   getUnreadCanvas(callback) {
     if (!this.unreadCanvas) {
       this.unreadCanvas = document.createElement('canvas');
-      this.unreadCanvas.height = this.unreadCanvas.width = 16;
+      this.unreadCanvas.height = 16;
+      this.unreadCanvas.width = 16;
 
       const ctx = this.unreadCanvas.getContext('2d');
       const img = new Image();
@@ -186,18 +193,14 @@ const FastmailFaviconCount = {
     const links = this.head.getElementsByTagName('link');
 
     // remove the old icon
-    for (let i = 0; i < links.length; i++) {
-      const link = links[i];
-
+    [].slice.call(links).forEach((link) => {
       if (
         (link.rel === 'shortcut icon' || link.rel === 'icon')
         && link.href !== icon
       ) {
         this.head.removeChild(link);
-      } else if (link.href === icon) {
-        return;
       }
-    }
+    });
 
     const newIcon = document.createElement('link');
     newIcon.type = 'image/png';
@@ -207,7 +210,8 @@ const FastmailFaviconCount = {
 
     // Chrome hack for updating the favicon
     const shim = document.createElement('iframe');
-    shim.width = shim.height = 0;
+    shim.width = 0;
+    shim.height = 0;
     document.body.appendChild(shim);
     shim.src = 'icon';
     document.body.removeChild(shim);
