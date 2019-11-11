@@ -1,0 +1,23 @@
+{
+  "name": "fastmail-favicon-count",
+  "version": "1.0.0",
+  "description": "A browser extension which adds a count of unread messages to the Fastmail favicon",
+  "main": "index.js",
+  "repository": "https://github.com/mgeraci/fastmail-favicon-count",
+  "author": "Michael P. Geraci <me@mgeraci.com>",
+  "license": "MIT",
+  "scripts": {
+    "watch": "webpack --watch --mode development",
+    "build": "webpack --mode production"
+  },
+  "dependencies": {
+  },
+  "devDependencies": {
+    "eslint": "6.6.0",
+    "eslint-config-airbnb-base": "14.0.0",
+    "eslint-loader": "3.0.2",
+    "eslint-plugin-import": "2.18.2",
+    "webpack": "4.41.2",
+    "webpack-cli": "3.3.10"
+  }
+}
