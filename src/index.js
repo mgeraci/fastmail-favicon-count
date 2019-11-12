@@ -94,54 +94,22 @@ const FastmailFaviconCount = {
           bgWidth -= 1;
         }
 
-        let digit;
-        let digitsWidth = bgWidth;
-        let numberMap;
-        let numberWidth;
-        let numberHeight;
-
         // stroke
-        range(0, digits).forEach((_, index) => {
-          digit = String(unreadCount)[index];
-
-          if (NUMBERS[digit]) {
-            numberMap = NUMBERS[digit];
-            numberHeight = numberMap.length;
-            numberWidth = numberMap[0].length;
-
-            range(0, numberHeight).forEach((y) => {
-              range(0, numberWidth).forEach((x) => {
-                if (numberMap[y][x]) {
-                  ctx.strokeRect(12 - digitsWidth + x, y + topMargin + 0, 3, 3);
-                }
-              });
-            });
-
-            digitsWidth -= numberWidth + padding;
-          }
+        this.drawNumber({
+          digits,
+          unreadCount,
+          fn: (x, y) => {
+            ctx.strokeRect(12 - bgWidth + x, y + topMargin, 3, 3);
+          },
         });
 
         // fill
-        digitsWidth = bgWidth;
-
-        range(0, digits).forEach((_, index) => {
-          digit = String(unreadCount)[index];
-
-          if (NUMBERS[digit]) {
-            numberMap = NUMBERS[digit];
-            numberHeight = numberMap.length;
-            numberWidth = numberMap[0].length;
-
-            range(0, numberHeight).forEach((y) => {
-              range(0, numberWidth).forEach((x) => {
-                if (numberMap[y][x]) {
-                  ctx.fillRect(13 - digitsWidth + x, y + topMargin + 1, 1, 1);
-                }
-              });
-            });
-
-            digitsWidth -= numberWidth + padding;
-          }
+        this.drawNumber({
+          digits,
+          unreadCount,
+          fn: (x, y) => {
+            ctx.fillRect(13 - bgWidth + x, y + topMargin + 1, 1, 1);
+          },
         });
 
         this.textedCanvas[unreadCount] = textedCanvas;
@@ -153,6 +121,35 @@ const FastmailFaviconCount = {
     if (this.textedCanvas[unreadCount]) {
       callback(this.textedCanvas[unreadCount]);
     }
+  },
+
+  drawNumber({
+    digits,
+    unreadCount,
+    fn,
+  }) {
+    let digit;
+    let numberMap;
+    let numberHeight;
+    let numberWidth;
+
+    range(0, digits).forEach((_, index) => {
+      digit = String(unreadCount)[index];
+
+      if (NUMBERS[digit]) {
+        numberMap = NUMBERS[digit];
+        numberHeight = numberMap.length;
+        numberWidth = numberMap[0].length;
+
+        range(0, numberHeight).forEach((y) => {
+          range(0, numberWidth).forEach((x) => {
+            if (numberMap[y][x]) {
+              fn(x, y);
+            }
+          });
+        });
+      }
+    });
   },
 
   getIcon(callback) {
