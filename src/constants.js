@@ -2,7 +2,7 @@ export const FASTMAIL_FOLDER = '.v-MailboxSource';
 export const FASTMAIL_FOLDER_NAME = '.app-source-name';
 export const FASTMAIL_BADGE = '.v-MailboxSource-badge';
 
-export const ICON = 'https://dropbox.michaelgeraci.com/public/fastmail/fastmail-icon.png';
+export const FALLBACK_ICON = 'https://dropbox.michaelgeraci.com/public/fastmail/fastmail-icon.png';
 
 export const NUMBERS = {
   0: [
@@ -97,11 +97,11 @@ export const NUMBERS = {
   ],
   i: [
     [0, 0, 0, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
-    [0, 0, 1, 0, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
+    [0, 0, 0, 1, 0],
     [0, 0, 0, 0, 0],
   ],
   o: [
