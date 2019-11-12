@@ -12,13 +12,19 @@ import {
 
 const FastmailFaviconCount = {
   init() {
+    const fastmailFavicon = document.getElementById('favicon');
+
+    if (fastmailFavicon) {
+      this.faviconImage = fastmailFavicon.getAttribute('href');
+    } else {
+      this.faviconImage = ICON;
+    }
+
     [this.head] = document.getElementsByTagName('head');
     this.timer = setInterval(() => {
       this.poll();
     }, 1000);
     this.poll();
-
-    return true;
   },
 
   poll() {
@@ -161,22 +167,22 @@ const FastmailFaviconCount = {
   getUnreadCanvas(callback) {
     if (!this.unreadCanvas) {
       this.unreadCanvas = document.createElement('canvas');
-      this.unreadCanvas.height = 16;
-      this.unreadCanvas.width = 16;
 
       const ctx = this.unreadCanvas.getContext('2d');
       const img = new Image();
 
       // allow cross-origin access for the image (since it's being hosted on
-      // michaelgeraci.com, but displaying on fastmail.com
+      // michaelgeraci.com, but displaying on fastmail.com)
       img.crossOrigin = 'anonymous';
 
       img.addEventListener('load', () => {
+        this.unreadCanvas.width = img.width;
+        this.unreadCanvas.height = img.height;
         ctx.drawImage(img, 0, 0);
         callback(this.unreadCanvas);
       }, true);
 
-      img.src = ICON;
+      img.src = this.faviconImage;
     } else {
       callback(this.unreadCanvas);
     }
