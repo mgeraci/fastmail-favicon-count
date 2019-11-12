@@ -195,10 +195,7 @@ const FastmailFaviconCount = {
 
     // remove the old icon
     [].slice.call(links).forEach((link) => {
-      if (
-        (link.rel === 'shortcut icon' || link.rel === 'icon')
-        && link.href !== icon
-      ) {
+      if (link.rel === 'shortcut icon' || link.rel === 'icon') {
         this.head.removeChild(link);
       }
     });
