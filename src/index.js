@@ -1,5 +1,7 @@
 /* global document, Image */
 
+import range from './range';
+
 import {
   FASTMAIL_FOLDER,
   FASTMAIL_FOLDER_NAME,
@@ -10,7 +12,7 @@ import {
 
 const FastmailFaviconCount = {
   init() {
-    this.head = document.getElementsByTagName('head')[0];
+    [this.head] = document.getElementsByTagName('head');
     this.timer = setInterval(() => {
       this.poll();
     }, 1000);
@@ -36,7 +38,7 @@ const FastmailFaviconCount = {
     const folders = document.querySelectorAll(FASTMAIL_FOLDER);
     const mailboxesToIgnore = ['Drafts', 'Trash'];
 
-    folders.forEach((folder, i) => {
+    folders.forEach((folder) => {
       const name = folder.querySelector(FASTMAIL_FOLDER_NAME).innerHTML;
       const count = parseInt(
         folder.querySelector(FASTMAIL_BADGE).innerHTML, 10,
@@ -50,15 +52,22 @@ const FastmailFaviconCount = {
     return res;
   },
 
-  drawUnreadCount(unread, callback) {
+  drawUnreadCount(_unread, callback) {
+    // how many digits the number of unread items is
+    const digits = String(_unread).length;
+
+    // if greater than 99, set to '100+'
+    const unreadCount = digits > 2 ? 'ioo+' : _unread;
+
     if (!this.textedCanvas) {
       this.textedCanvas = [];
     }
 
-    if (!this.textedCanvas[unread]) {
+    if (!this.textedCanvas[unreadCount]) {
       this.getUnreadCanvas((iconCanvas) => {
         const textedCanvas = document.createElement('canvas');
-        textedCanvas.height = textedCanvas.width = iconCanvas.width;
+        textedCanvas.height = iconCanvas.width;
+        textedCanvas.width = iconCanvas.width;
         const ctx = textedCanvas.getContext('2d');
         ctx.drawImage(iconCanvas, 0, 0);
 
@@ -66,88 +75,83 @@ const FastmailFaviconCount = {
         ctx.fillStyle = 'rgba(255,255,255,0.7)';
         ctx.fillStyle = '#000';
 
-        // how many digits the number of unread items is
-        const digits = String(unread).length;
-
-        // if greater than 99, set to '100+'
-        if (digits > 2) {
-          unread = 'ioo+';
-        }
-
         let bgWidth = 0;
         const padding = digits > 2 ? -1 : 1; // padding between digits
         const topMargin = 7; // canvas height from icon top
 
-        // set the bg width
+        // set the background width
         if (digits > 2) {
           bgWidth = 14;
         } else {
-          for (var index = 0; index < digits; index++) {
-            bgWidth += NUMBERS[String(unread)[index]][0].length;
+          range(0, digits).forEach((_, index) => {
+            bgWidth += NUMBERS[String(unreadCount)[index]][0].length;
 
             if (index < digits - 1) {
               bgWidth += padding;
             }
-          }
+          });
 
           bgWidth -= 1;
         }
 
         let digit;
         let digitsWidth = bgWidth;
+        let numberMap;
+        let numberWidth;
+        let numberHeight;
 
         // stroke
-        for (var index = 0; index < digits; index++) {
-          digit = String(unread)[index];
+        range(0, digits).forEach((_, index) => {
+          digit = String(unreadCount)[index];
 
           if (NUMBERS[digit]) {
-            var map = NUMBERS[digit];
-            var height = map.length;
-            var width = map[0].length;
+            numberMap = NUMBERS[digit];
+            numberHeight = numberMap.length;
+            numberWidth = numberMap[0].length;
 
-            for (var y = 0; y < height; y++) {
-              for (var x = 0; x < width; x++) {
-                if (map[y][x]) {
+            range(0, numberHeight).forEach((y) => {
+              range(0, numberWidth).forEach((x) => {
+                if (numberMap[y][x]) {
                   ctx.strokeRect(12 - digitsWidth + x, y + topMargin + 0, 3, 3);
                 }
-              }
-            }
+              });
+            });
 
-            digitsWidth -= width + padding;
+            digitsWidth -= numberWidth + padding;
           }
-        }
+        });
 
         // fill
         digitsWidth = bgWidth;
 
-        for (var index = 0; index < digits; index++) {
-          digit = String(unread)[index];
+        range(0, digits).forEach((_, index) => {
+          digit = String(unreadCount)[index];
 
           if (NUMBERS[digit]) {
-            var map = NUMBERS[digit];
-            var height = map.length;
-            var width = map[0].length;
+            numberMap = NUMBERS[digit];
+            numberHeight = numberMap.length;
+            numberWidth = numberMap[0].length;
 
-            for (var y = 0; y < height; y++) {
-              for (var x = 0; x < width; x++) {
-                if (map[y][x]) {
+            range(0, numberHeight).forEach((y) => {
+              range(0, numberWidth).forEach((x) => {
+                if (numberMap[y][x]) {
                   ctx.fillRect(13 - digitsWidth + x, y + topMargin + 1, 1, 1);
                 }
-              }
-            }
+              });
+            });
 
-            digitsWidth -= width + padding;
+            digitsWidth -= numberWidth + padding;
           }
-        }
+        });
 
-        this.textedCanvas[unread] = textedCanvas;
+        this.textedCanvas[unreadCount] = textedCanvas;
 
-        callback(this.textedCanvas[unread]);
+        callback(this.textedCanvas[unreadCount]);
       });
     }
 
-    if (this.textedCanvas[unread]) {
-      callback(this.textedCanvas[unread]);
+    if (this.textedCanvas[unreadCount]) {
+      callback(this.textedCanvas[unreadCount]);
     }
   },
 
