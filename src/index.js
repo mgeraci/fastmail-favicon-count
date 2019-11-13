@@ -13,7 +13,7 @@ import {
 const FastmailFaviconCount = {
   init() {
     const fastmailFavicon = document.getElementById('favicon');
-    const testFallbackIcon = true;
+    const testFallbackIcon = false;
 
     if (fastmailFavicon && !testFallbackIcon) {
       this.faviconImage = fastmailFavicon.getAttribute('href');
@@ -81,8 +81,8 @@ const FastmailFaviconCount = {
         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.fillStyle = '#000';
 
-        const letterSpacing = digits > 2 ? -1 : 1; // padding between digits
-        const letterSize = 1;
+        const letterSpacing = digits > 2 ? -2 : 2; // padding between digits
+        const letterSize = 2;
 
         // we want the number to be in the lower-right corner, but canvas
         // takes coordinates from the upper-left. so, we calculate the
