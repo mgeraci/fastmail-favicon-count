@@ -56,7 +56,8 @@ const FastmailFaviconCount = {
       }
     });
 
-    return res;
+    console.log(res);
+    return 102;
   },
 
   drawUnreadCount(_unread, callback) {
@@ -81,7 +82,7 @@ const FastmailFaviconCount = {
         ctx.strokeStyle = 'rgba(255,255,255,0.5)';
         ctx.fillStyle = '#000';
 
-        const letterSpacing = digits > 2 ? -2 : 2; // padding between digits
+        const letterSpacing = digits > 2 ? 1 : 2; // padding between digits
         const letterSize = 2;
 
         // we want the number to be in the lower-right corner, but canvas
@@ -90,7 +91,7 @@ const FastmailFaviconCount = {
         const padding = iconCanvas.width * 0.0625; // canvas edge to the number, as a percentage
         const topMargin = iconCanvas.height - NUMBERS['0'].length - padding; // canvas height from icon top
         const numbersWidth = NUMBERS['0'][0].length * digits + letterSpacing * (digits - 1);
-        let leftMargin = iconCanvas.width - numbersWidth;
+        let leftMargin = iconCanvas.width - numbersWidth - 1;
 
         if (leftMargin < 0) {
           leftMargin = 0;
