@@ -6,6 +6,12 @@ import {
   FASTMAIL_FOLDER,
   FASTMAIL_FOLDER_NAME,
   FASTMAIL_BADGE,
+
+  FILL_STYLE,
+  STROKE_STYLE,
+  LETTER_SIZE,
+  LETTER_SPACING,
+
   FALLBACK_ICON,
   NUMBERS,
 } from './constants';
@@ -56,13 +62,12 @@ const FastmailFaviconCount = {
       }
     });
 
-    console.log(res);
-    return 102;
+    return res;
   },
 
   drawUnreadCount(_unread, callback) {
     // if greater than 99, set to '100+'
-    const unreadCount = _unread > 99 ? 'ioo+' : _unread;
+    const unreadCount = _unread > 99 ? '99+' : _unread;
 
     // how many digits the number of unread items is
     const digits = String(unreadCount).length;
@@ -79,18 +84,15 @@ const FastmailFaviconCount = {
         const ctx = textedCanvas.getContext('2d');
         ctx.drawImage(iconCanvas, 0, 0);
 
-        ctx.strokeStyle = 'rgba(255,255,255,0.5)';
-        ctx.fillStyle = '#000';
-
-        const letterSpacing = digits > 2 ? 1 : 2; // padding between digits
-        const letterSize = 2;
+        ctx.strokeStyle = STROKE_STYLE;
+        ctx.fillStyle = FILL_STYLE;
 
         // we want the number to be in the lower-right corner, but canvas
         // takes coordinates from the upper-left. so, we calculate the
         // upper-left offset with the size of the numbers.
         const padding = iconCanvas.width * 0.0625; // canvas edge to the number, as a percentage
         const topMargin = iconCanvas.height - NUMBERS['0'].length - padding; // canvas height from icon top
-        const numbersWidth = NUMBERS['0'][0].length * digits + letterSpacing * (digits - 1);
+        const numbersWidth = NUMBERS['0'][0].length * digits + LETTER_SPACING * (digits - 1);
         let leftMargin = iconCanvas.width - numbersWidth - 1;
 
         if (leftMargin < 0) {
@@ -101,13 +103,12 @@ const FastmailFaviconCount = {
         this.drawNumber({
           digits,
           unreadCount,
-          letterSpacing,
           fn: (x, y) => {
             ctx.strokeRect(
-              x + leftMargin - letterSize,
-              y + topMargin - letterSize,
-              letterSize * 3,
-              letterSize * 3,
+              x + leftMargin - LETTER_SIZE,
+              y + topMargin - LETTER_SIZE,
+              LETTER_SIZE * 3,
+              LETTER_SIZE * 3,
             );
           },
         });
@@ -116,13 +117,12 @@ const FastmailFaviconCount = {
         this.drawNumber({
           digits,
           unreadCount,
-          letterSpacing,
           fn: (x, y) => {
             ctx.fillRect(
               x + leftMargin,
               y + topMargin,
-              letterSize,
-              letterSize,
+              LETTER_SIZE,
+              LETTER_SIZE,
             );
           },
         });
@@ -141,7 +141,6 @@ const FastmailFaviconCount = {
   drawNumber({
     digits,
     unreadCount,
-    letterSpacing,
     fn,
   }) {
     let digit;
@@ -157,7 +156,7 @@ const FastmailFaviconCount = {
         numberMap = NUMBERS[digit];
         numberHeight = numberMap.length;
         numberWidth = numberMap[0].length;
-        xOffset = numberWidth * i + letterSpacing * i;
+        xOffset = numberWidth * i + LETTER_SPACING * i;
 
         range(0, numberHeight).forEach((y) => {
           range(0, numberWidth).forEach((x) => {
