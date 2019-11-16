@@ -2,7 +2,7 @@
 This browser extension adds a count of your unread messages (excluding the
 drafts folder) to the Fastmail favicon. It works with both Firefox and Chrome.
 
-![favicon screenshot](./icons/icon-48.png)
+![favicon screenshot](./icons/256x256.png)
 
 
 ## Installation
