@@ -11,5 +11,8 @@
       "matches": ["*://*.fastmail.com/mail*"],
       "js": ["dist/main.js"]
     }
+  ],
+  "permissions": [
+    "https://fastmail.com"
   ]
 }
