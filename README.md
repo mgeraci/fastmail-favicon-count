@@ -5,6 +5,7 @@ drafts folder) to the Fastmail favicon. It works with both Firefox and Chrome.
 ![favicon screenshot](./icons/128x128.png)
 
 Chrome web store: https://chrome.google.com/webstore/detail/fastmail-favicon-count/edphkeodanpjkllbfopplbdpofglfpdm
+
 Firefox add-ons: https://addons.mozilla.org/en-US/firefox/addon/fastmail-favicon-count/
 
 
