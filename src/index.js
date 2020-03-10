@@ -35,8 +35,10 @@ const FastmailFaviconCount = {
   },
 
   poll() {
-    if (this.getUnreadCount() >= 0) {
-      this.getUnreadCountIcon((icon) => {
+    const unreadCount = this.getUnreadCount();
+
+    if (unreadCount >= 0) {
+      this.getUnreadCountIcon(unreadCount, (icon) => {
         this.setIcon(icon);
       });
     } else {
@@ -53,9 +55,12 @@ const FastmailFaviconCount = {
 
     folders.forEach((folder) => {
       const name = folder.querySelector(FASTMAIL_FOLDER_NAME).innerHTML;
-      const count = parseInt(
-        folder.querySelector(FASTMAIL_BADGE).innerHTML, 10,
-      ) || 0;
+      const badge = folder.querySelector(FASTMAIL_BADGE);
+      const count = badge
+        ? parseInt(
+          folder.querySelector(FASTMAIL_BADGE).innerHTML, 10,
+        ) || 0
+        : 0;
 
       if (mailboxesToIgnore.indexOf(name) < 0) {
         res += count;
@@ -73,7 +78,7 @@ const FastmailFaviconCount = {
     const digits = String(unreadCount).length;
 
     if (!this.textedCanvas) {
-      this.textedCanvas = [];
+      this.textedCanvas = {};
     }
 
     if (!this.textedCanvas[unreadCount]) {
@@ -199,10 +204,8 @@ const FastmailFaviconCount = {
     }
   },
 
-  getUnreadCountIcon(callback) {
-    const unread = this.getUnreadCount();
-
-    this.drawUnreadCount(unread, (icon) => {
+  getUnreadCountIcon(unreadCount, callback) {
+    this.drawUnreadCount(unreadCount, (icon) => {
       callback(icon.toDataURL('image/png'));
     });
   },
