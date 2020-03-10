@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Fastmail favicon count",
-  "version": "3.0.2",
+  "version": "3.0.3",
   "description": "Add a count of your unread messages to the favicon on Fastmail.",
   "icons": {
     "48": "icons/48x48.png",
