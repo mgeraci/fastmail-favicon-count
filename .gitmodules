@@ -1,0 +1,3 @@
+[submodule "favicon_count_base"]
+	path = favicon_count_base
+	url = git@github.com:mgeraci/favicon-count-base.git
