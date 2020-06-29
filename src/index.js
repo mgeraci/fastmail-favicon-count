@@ -3,9 +3,11 @@
 import FaviconCount from '../favicon_count_base/dist/FaviconCountBase';
 
 import {
+  INITIALIZATION_DELAY,
   FASTMAIL_FOLDER,
   FASTMAIL_FOLDER_NAME,
   FASTMAIL_BADGE,
+  MAILBOXES_TO_IGNORE,
 } from './constants';
 
 class FastmailFaviconCount {
@@ -15,7 +17,7 @@ class FastmailFaviconCount {
       this.timer = setInterval(this.poll.bind(this), 500);
       this.faviconCount = new FaviconCount();
       this.poll();
-    }, 1000);
+    }, INITIALIZATION_DELAY);
   }
 
   poll() {
@@ -26,7 +28,6 @@ class FastmailFaviconCount {
   getUnreadCount() {
     const folders = document.querySelectorAll(FASTMAIL_FOLDER);
     let res = folders.length ? 0 : null;
-    const mailboxesToIgnore = ['Drafts', 'Trash'];
 
     folders.forEach((folder) => {
       const name = folder.querySelector(FASTMAIL_FOLDER_NAME).innerHTML;
@@ -37,7 +38,7 @@ class FastmailFaviconCount {
         ) || 0
         : 0;
 
-      if (mailboxesToIgnore.indexOf(name) < 0) {
+      if (MAILBOXES_TO_IGNORE.indexOf(name) < 0) {
         res += count;
       }
     });
